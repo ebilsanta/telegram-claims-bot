@@ -54,7 +54,7 @@ def main():
         listen="0.0.0.0",
         port=int(PORT),
         url_path=TOKEN,
-        webhook_url='https://quiet-peak-69848.herokuapp.com/' + TOKEN
+        webhook_url='https://telegram-claims-bot.herokuapp.com/' + TOKEN
     )
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
