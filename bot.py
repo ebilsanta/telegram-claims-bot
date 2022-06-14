@@ -26,7 +26,6 @@ if __name__ == '__main__':
         url_path=TOKEN,
         webhook_url='https://telegram-claims-bot.herokuapp.com/' + TOKEN
     )
-    
-    application.run_polling()
+
 
 
