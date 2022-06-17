@@ -53,8 +53,11 @@ async def view(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 	else:
 		format_claims = format_result_view(user_claims)
+		special_message = ""
+		if update.message.chat.username == "MangoBay":
+			special_message = "Fk ur mader passaway passaway is goood\n"
 		await update.message.reply_text(
-			f"{format_claims}"
+			f"{special_message}{format_claims}"
 		)
 		user_claims.clear()
 	return ConversationHandler.END
@@ -158,9 +161,15 @@ async def clear_complete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, I didn't understand that command.")
 
+async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, 
+		text="Type /start to see options or type:\n'a' to add claim,\n'v' to view claims,\n'r' to remove claim,\n'c' to clear all claims.")
+
 
 if __name__ == '__main__':
 	application = ApplicationBuilder().token(os.environ['BOT_TOKEN']).build()
+
+	help_handler = CommandHandler("help", help)
 
 	start_handler = ConversationHandler(
 		entry_points=[CommandHandler("start", start),
@@ -195,6 +204,7 @@ if __name__ == '__main__':
 	)
 
 	application.add_handler(start_handler)
+
 
 	application.run_webhook(
 		listen='0.0.0.0',
