@@ -4,7 +4,7 @@ import database
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters, ConversationHandler
 
-PORT = int(os.environ.get('PORT', 5000))
+PORT = int(os.environ.get('PORT', '8443'))
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -200,8 +200,6 @@ if __name__ == '__main__':
 		listen='0.0.0.0',
 		port=os.environ['PORT'],
 		url_path=os.environ['BOT_TOKEN'],
-		key='./private.key',
-		cert='./cert.pem',
 		webhook_url='https://telegram-claims-bot.herokuapp.com/' + os.environ['BOT_TOKEN']
 	)
 
