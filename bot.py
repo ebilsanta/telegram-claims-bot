@@ -198,7 +198,7 @@ if __name__ == '__main__':
 
 	application.run_webhook(
 		listen='0.0.0.0',
-		port=8443,
+		port=os.environ['PORT'],
 		url_path=os.environ['BOT_TOKEN'],
 		key='./private.key',
 		cert='./cert.pem',
