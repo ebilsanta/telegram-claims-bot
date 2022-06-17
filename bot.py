@@ -164,10 +164,10 @@ if __name__ == '__main__':
 
 	start_handler = ConversationHandler(
 		entry_points=[CommandHandler("start", start),
-						MessageHandler(filters.Regex("Add claim"), add_date),
-						MessageHandler(filters.Regex("View claims"), view),
-						MessageHandler(filters.Regex("Remove claim"), remove),
-						MessageHandler(filters.Regex("Clear all claims"), clear)
+						MessageHandler(filters.Regex("Add claim") | filters.Regex("add claim") |  filters.Regex("a"), add_date),
+						MessageHandler(filters.Regex("View claims") | filters.Regex("view claim") | filters.Regex("v"), view),
+						MessageHandler(filters.Regex("Remove claim") | filters.Regex("remove claim") | filters.Regex("r"), remove),
+						MessageHandler(filters.Regex("Clear all claims") | filters.Regex("clear all claims") | filters.Regex("c"), clear)
 					],
 		states={
 			CHOICE: [
