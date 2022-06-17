@@ -1,36 +1,10 @@
-# from telegram import Update
-# import logging
-# from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
-# import os
-
-# PORT = int(os.environ.get('PORT', '5000'))
-
-# TOKEN = '5440405771:AAFEySa6ebHb0s64V_tQs8Ip2LntwnQtgpA'
-
-# logging.basicConfig(
-#     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-#     level=logging.INFO
-# )
-
-# async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-#     await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
-
-# if __name__ == '__main__':
-#     application = ApplicationBuilder().token(TOKEN).build()
-    
-#     start_handler = CommandHandler('start', start)
-#     application.add_handler(start_handler)
-#     application.run_webhook(
-# 		listen="0.0.0.0",
-# 		port=int(PORT),
-#         url_path=TOKEN,
-#         webhook_url='https://telegram-claims-bot.herokuapp.com/' + TOKEN
-#     )
-
+import os
 import logging
 import database
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters, ConversationHandler
+
+PORT = int(os.environ.get('PORT', 5000))
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -186,7 +160,7 @@ async def unknown(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == '__main__':
-	application = ApplicationBuilder().token('5440405771:AAFEySa6ebHb0s64V_tQs8Ip2LntwnQtgpA').build()
+	application = ApplicationBuilder().token(os.environ['BOT_TOKEN']).build()
 
 	start_handler = ConversationHandler(
 		entry_points=[CommandHandler("start", start),
@@ -222,6 +196,13 @@ if __name__ == '__main__':
 
 	application.add_handler(start_handler)
 
-	application.run_polling()
+	application.run_webhook(
+		listen='0.0.0.0',
+		port=8443,
+		url_path=os.environ['BOT_TOKEN'],
+		key='./private.key',
+		cert='./cert.pem',
+		webhook_url='https://telegram-claims-bot.herokuapp.com/' + os.environ['BOT_TOKEN']
+	)
 
 
