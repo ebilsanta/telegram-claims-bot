@@ -1,16 +1,24 @@
 import os
 import mysql.connector
 from mysql.connector import Error
+from dotenv import load_dotenv
+import datetime
+
+load_dotenv()
+
+def get_connection():
+	return mysql.connector.connect(host=os.getenv('DB_HOST'),
+								database=os.getenv('DB_DATABASE'),
+								user=os.getenv('DB_USERNAME'),
+								password=os.getenv('DB_PASSWORD'))
 
 def add_claim(username, date, description, amount):
 	try:
 		month = date[3:]
 		day = date[:2]
-		f_date = f"2022-{month}-{day}"
-		connection = mysql.connector.connect(host=os.environ['DB_HOST'],
-											database=os.environ['DB_DATABASE'],
-											user=os.environ['DB_USERNAME'],
-											password=os.environ['DB_PASSWORD'])
+		year = datetime.date.today().year
+		f_date = f"{year}-{month}-{day}"
+		connection = get_connection()
 		cursor = connection.cursor()
 		mySql_insert_query = """INSERT INTO claims (username, date, description, amount) 
 							VALUES (%s, %s, %s, %s)"""
@@ -27,10 +35,7 @@ def add_claim(username, date, description, amount):
 
 def get_claims(username):
 	try:
-		connection = mysql.connector.connect(host=os.environ['DB_HOST'],
-											database=os.environ['DB_DATABASE'],
-											user=os.environ['DB_USERNAME'],
-											password=os.environ['DB_PASSWORD'])
+		connection = get_connection()
 
 		sql_select_Query = "select * from claims where username = %s"
 
@@ -56,10 +61,7 @@ def get_claims(username):
 
 def delete_claim(username, index):
 	try:
-		connection = mysql.connector.connect(host=os.environ['DB_HOST'],
-											database=os.environ['DB_DATABASE'],
-											user=os.environ['DB_USERNAME'],
-											password=os.environ['DB_PASSWORD'])
+		connection = get_connection()
 		cursor = connection.cursor()
 		sql_Delete_query = """DELETE FROM claims WHERE claimId = (
 								SELECT max(claimId) FROM (
@@ -79,10 +81,7 @@ def delete_claim(username, index):
 
 def clear_claims(username):
 	try:
-		connection = mysql.connector.connect(host=os.environ['DB_HOST'],
-											database=os.environ['DB_DATABASE'],
-											user=os.environ['DB_USERNAME'],
-											password=os.environ['DB_PASSWORD'])
+		connection = get_connection()
 		cursor = connection.cursor()
 		sql_Delete_query = "DELETE FROM claims WHERE username = %s"
 		# row to delete
